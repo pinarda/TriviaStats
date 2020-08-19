@@ -307,7 +307,7 @@ generate_creator_plot <- function(creator){
     geom_line(data=mean_data,aes(x=seq(1:length(means)), y=means), colour="#ed7474") + 
     xlab("Trivia Week") + 
     ylab("Round Score") + 
-    ggtitle(label=paste("How well everyone did on", creator, "'s Rounds"), subtitle = "(red points represent the average)") + 
+    ggtitle(label=paste("How well everyone did on", creator, "'s rounds"), subtitle = "(red points represent the average)") + 
     theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) + 
     ylim(-0.1, 10.1) 
    
