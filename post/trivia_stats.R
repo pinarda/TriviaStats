@@ -1,6 +1,10 @@
 library(plyr)
 library(rlang)
+library(plotly)
 library(ggplot2)
+library(RColorBrewer)
+library(heatmaply)
+
 
 # should match excel sheet names
 dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12")
@@ -295,7 +299,7 @@ generate_creator_plot <- function(creator){
   
   mean_data = data.frame(seq(1:length(means)), means)
   # partially transparent points by setting `alpha = 0.5`
-  ggplot(data.frame(xs, ys), aes(xs, ys)) +
+   p <- ggplot(data.frame(xs, ys), aes(xs, ys)) +
     geom_point(position=position_jitter(w=0.05, h=0.05),
                shape = 21, alpha = 0.5, size = 3, colour="#01587A", fill="#077DAA") +
     theme_bw() +
@@ -306,7 +310,45 @@ generate_creator_plot <- function(creator){
     ggtitle(label=paste("How well everyone did on", creator, "'s Rounds"), subtitle = "(red points represent the average)") + 
     theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) + 
     ylim(-0.1, 10.1) 
-    
+   
+   ggplotly(p)
+}
+
+generate_creator_plot_overlay <- function(creator){
+  u = sapply(dates, function(creator, date){s = get_creator_round_scores(creator, date)
+  t = unlist(s[!is.na(s)], use.names=FALSE)}, creator=creator)
+  xs <- double()
+  ys <- double()
+  means <- double()
+  for (i in 1:length(dates)){
+    d = dates[i]
+    xvals = rep(i, length(unlist(u[d], use.names = FALSE)))
+    yvals = unlist(u[d], use.names = FALSE)
+    xs <- c(xs, xvals)
+    ys <- c(ys, yvals)
+    means <- c(means, mean(yvals))
+  }
+  
+  mean_data = data.frame(seq(1:length(means)), means, groups=creator)
+  # partially transparent points by setting `alpha = 0.5`
+  p <- ggplot(data.frame(seq(1:length(means)), means), aes(x=seq(1:length(means)), means)) +
+    geom_point(position=position_jitter(w=0.05, h=0.05),
+               shape = 21, alpha = 0.5, size = 3, colour="#01587A", fill="#077DAA") +
+    theme_bw() +
+    geom_point(data=mean_data, mapping=aes(x=seq(1:length(means)), y=means), colour="#ed7474", shape = 21, alpha = 1, size = 3, fill="#b05656") +
+    geom_line(data=mean_data,aes(x=seq(1:length(means)), y=means), colour="#ed7474") + 
+    xlab("Trivia Week") + 
+    ylab("Round Score") + 
+    ggtitle(label=paste("How well everyone did on", creator, "'s Rounds"), subtitle = "(red points represent the average)") + 
+    theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) + 
+    ylim(-0.1, 10.1) 
+  
+  ggplotly(p)
+}
+
+bias_table_heatmap <- function(){
+  coul <- colorRampPalette(brewer.pal(8, "PiYG"))(25)
+  heatmaply(bt, dendrogram = "none", labCol = colnames(bt), labRow = rownames(bt), colors=coul, xlab="Creator", ylab="Player", main="Bias Table")
 }
 
 # don't run this too much or google gets upset
@@ -317,4 +359,7 @@ if(IS_GOOGLE_UPSET){
 }
 
 scores = lapply(filenames, read.csv)
+bt = bias_table()
+bt[4, 4] = NA # Jenny had a bias on her own rounds, this is a hack
+
 
