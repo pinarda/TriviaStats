@@ -6,17 +6,30 @@
     <description>Recent content in Posts on Trivia Stats</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 18 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/TriviaStats/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Viewing Creator Plots</title>
-      <link>/TriviaStats/2020/09/18/viewing-creator-plots/</link>
-      <pubDate>Fri, 18 Sep 2020 00:00:00 +0000</pubDate>
+      <title>Notes and Ideas</title>
+      <link>/TriviaStats/2020/08/18/notes-and-ideas/</link>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>/TriviaStats/2020/09/18/viewing-creator-plots/</guid>
+      <guid>/TriviaStats/2020/08/18/notes-and-ideas/</guid>
+      <description>Ideas Plot all mean scores (as line plots) on same plot - hover to highlight a single plot (https://stackoverflow.com/questions/52532428/highlight-all-values-from-a-group-on-hover) we might not be able to do this with a static site, look into it
+Get round labeled and do stuff (bias table/plot for round types maybe)
+do score prediction based on difficulty, player average, and round label/maybe biases
+ To Do Finish player plots
+Format output so we don’t have to scroll through dozens of charts to find the right one</description>
+    </item>
+    
+    <item>
+      <title>Viewing Creator Plots</title>
+      <link>/TriviaStats/2020/08/18/viewing-creator-plots/</link>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/TriviaStats/2020/08/18/viewing-creator-plots/</guid>
       <description> Plotting the Scores on a Creator’s Round First, load the trivia_stats.R source file, which contains all functions for generating statistics:
 source(&amp;quot;trivia_stats.R&amp;quot;) Then run generate_creator_plot(CREATOR_NAME):
 generate_creator_plot(&amp;quot;Alex&amp;quot;) generate_creator_plot(&amp;quot;Chris&amp;quot;) generate_creator_plot(&amp;quot;Dad&amp;quot;) generate_creator_plot(&amp;quot;Drew&amp;quot;) generate_creator_plot(&amp;quot;Ichigo&amp;quot;) generate_creator_plot(&amp;quot;Jeff&amp;quot;) generate_creator_plot(&amp;quot;Jenny&amp;quot;) generate_creator_plot(&amp;quot;Megan&amp;quot;) generate_creator_plot(&amp;quot;Mom&amp;quot;) generate_creator_plot(&amp;quot;Zach&amp;quot;)  </description>
