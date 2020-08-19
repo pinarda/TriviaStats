@@ -6,7 +6,7 @@
     <description>Recent content on Trivia Stats</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 18 Sep 2020 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Fri, 18 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/TriviaStats/index.xml" rel="self" type="application/rss+xml" />
     
@@ -24,12 +24,12 @@ The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui X
     <item>
       <title>Trivia Statistics 2020-09-18</title>
       <link>/TriviaStats/2020/09/18/trivia-statistics-2020-09-18/</link>
-      <pubDate>Fri, 18 Sep 2020 21:13:14 -0500</pubDate>
+      <pubDate>Fri, 18 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/TriviaStats/2020/09/18/trivia-statistics-2020-09-18/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <description> Viewing Creator Plots First, load the trivia_stats.R source file, which contains all functions for generating statistics:
+source(&amp;quot;trivia_stats.R&amp;quot;) Then run generate_creator_plot(CREATOR_NAME):
+generate_creator_plot(&amp;quot;Alex&amp;quot;) generate_creator_plot(&amp;quot;Chris&amp;quot;)  </description>
     </item>
     
   </channel>
