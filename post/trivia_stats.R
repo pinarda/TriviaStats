@@ -314,7 +314,7 @@ generate_creator_plot <- function(creator){
    ggplotly(p)
 }
 
-generate_creator_plot_overlay <- function(creator){
+creator_mean_data <- function(creator){
   u = sapply(dates, function(creator, date){s = get_creator_round_scores(creator, date)
   t = unlist(s[!is.na(s)], use.names=FALSE)}, creator=creator)
   xs <- double()
@@ -329,21 +329,27 @@ generate_creator_plot_overlay <- function(creator){
     means <- c(means, mean(yvals))
   }
   
-  mean_data = data.frame(seq(1:length(means)), means, groups=creator)
+  mean_data = data.frame(weeks=seq(1:length(means)), means, groups=creator)
+  return(mean_data)
+}
+
+creator_overlay_plot <- function(){
+  da = lapply(players, creator_mean_data)
+  all_data = rbind(da[[1]], da[[2]], da[[3]], da[[4]], da[[5]], da[[6]], da[[7]], da[[8]], da[[9]], da[[10]])
+  d = highlight_key(all_data, ~groups)
   # partially transparent points by setting `alpha = 0.5`
-  p <- ggplot(data.frame(seq(1:length(means)), means), aes(x=seq(1:length(means)), means)) +
-    geom_point(position=position_jitter(w=0.05, h=0.05),
-               shape = 21, alpha = 0.5, size = 3, colour="#01587A", fill="#077DAA") +
+  p <- ggplot(d, aes(x=weeks, y=means, group=groups))+
+    geom_point(shape = 21, alpha = 0.5, size = 3, colour="#01587A", fill="#077DAA") +
+    geom_line(data=d,aes(x=weeks, y=means), colour="#077DAA") +
+    ylim(-0.1, 10.1) +
     theme_bw() +
-    geom_point(data=mean_data, mapping=aes(x=seq(1:length(means)), y=means), colour="#ed7474", shape = 21, alpha = 1, size = 3, fill="#b05656") +
-    geom_line(data=mean_data,aes(x=seq(1:length(means)), y=means), colour="#ed7474") + 
     xlab("Trivia Week") + 
     ylab("Round Score") + 
-    ggtitle(label=paste("How well everyone did on", creator, "'s Rounds"), subtitle = "(red points represent the average)") + 
-    theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) + 
-    ylim(-0.1, 10.1) 
+    ggtitle(label=paste("How well everyone did on everyone else's Rounds (hover to see detail)")) + 
+    theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) 
   
-  ggplotly(p)
+  gg <- ggplotly(p, tooltip="groups")
+  highlight( gg, on = "plotly_hover", off = "plotly_deselect", color = "red" )
 }
 
 bias_table_heatmap <- function(){
