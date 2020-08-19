@@ -2,85 +2,97 @@
 <html lang="en-us">
   <head>
     <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Hugo 0.74.3" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Tags - Hail Science Trivia Statistics</title>
+    
+    <meta name="description" content="A website built through Hugo and blogdown.">
+    <meta name="author" content="">
+    
+    <link href="/TriviaStats/an-old-hope.min.css" rel="stylesheet">
+    <link href="/TriviaStats/style.css" rel="stylesheet">
+    <link href="/TriviaStats/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="/TriviaStats/apple-touch-icon.png">
+    <link rel="icon" href="/TriviaStats/favicon.ico">
+    <meta name="generator" content="Hugo 0.74.3" />
+    
+    <link rel="alternate" type="application/rss+xml" href="/TriviaStats/tags/index.xml" title="Hail Science Trivia Statistics" />
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
 
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-<title>Tags - Trivia Stats</title>
-<meta property="og:title" content="Tags - Trivia Stats">
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
 
+        function setBodyClass() {
+          if (window.matchMedia("(prefers-color-scheme: dark)").matches || now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
 
-  <link href='/TriviaStats/favicon.ico' rel='icon' type='image/x-icon'/>
-
-
-
-  
-
-
-
-
-
-<link href="/TriviaStats/tags/index.xml" rel="alternate" type="application/rss+xml" title="Trivia Stats" />
-
-
-
-<link rel="stylesheet" href="/TriviaStats/css/fonts.css" media="all">
-<link rel="stylesheet" href="/TriviaStats/css/main.css" media="all">
-
-
-
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
   </head>
-  <body>
-    <div class="wrapper">
-      <header class="header">
-        <nav class="nav">
-  <a href="/TriviaStats/" class="nav-logo">
-    <img src="/TriviaStats/images/logo.png"
-         width="50"
-         height="50"
-         alt="Logo">
-  </a>
-
-  <ul class="nav-links">
-    
-    <li><a href="/TriviaStats/about/">About</a></li>
-    
-    <li><a href="https://github.com/pinarda/TriviaStats">GitHub</a></li>
-    
-  </ul>
-</nav>
-
-      </header>
-
-
-<main class="content" role="main">
-
-  
-  <div class="archive">
-    
-    
-    
-  </div>
-
-</main>
-
-      <footer class="footer">
-        <ul class="footer-links">
+  <body class="list">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <p class="logo"><a href="/TriviaStats/">Hail Science Trivia Statistics</a></p>
+        <ul class="menu">
           <li>
-            <a href="/TriviaStats/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
-          </li>
-          <li>
-            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/TriviaStats/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+            <a href="https://github.com/pinarda/TriviaStats">GitHub</a>
           </li>
         </ul>
-      </footer>
+      </nav>
+    </header>
+    <main class="main">
 
-    </div>
-    
-
-    
-
-    
-  </body>
+<header class="page-header"><h1>Tags</h1></header>
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="/TriviaStats/">Hail Science Trivia Statistics</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="/TriviaStats/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
 </html>
 

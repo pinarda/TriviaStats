@@ -3,8 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/TriviaStats/about/</loc>
-    <lastmod>2020-09-18T21:48:51-07:00</lastmod>
+    <loc>/TriviaStats/</loc>
+    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/TriviaStats/ideas/</loc>
+    <lastmod>2020-08-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -18,12 +23,12 @@
   </url>
   
   <url>
-    <loc>/TriviaStats/2020/08/18/trivia-plots/</loc>
+    <loc>/TriviaStats/2020-08-18-stats/</loc>
     <lastmod>2020-08-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/TriviaStats/</loc>
+    <loc>/TriviaStats/2020/08/18/trivia-plots/</loc>
     <lastmod>2020-08-18T00:00:00+00:00</lastmod>
   </url>
   

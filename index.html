@@ -2,104 +2,128 @@
 <html lang="en-us">
   <head>
     <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Hugo 0.74.3" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Hail Science Trivia Statistics - Hail Science Trivia Statistics</title>
+    
+    <meta name="description" content="A website built through Hugo and blogdown.">
+    <meta name="author" content="">
+    
+    <link href="/TriviaStats/an-old-hope.min.css" rel="stylesheet">
+    <link href="/TriviaStats/style.css" rel="stylesheet">
+    <link href="/TriviaStats/custom.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="/TriviaStats/apple-touch-icon.png">
+    <link rel="icon" href="/TriviaStats/favicon.ico">
+    <meta name="generator" content="Hugo 0.74.3" />
+    
+    <link rel="alternate" type="application/rss+xml" href="/TriviaStats/index.xml" title="Hail Science Trivia Statistics" />
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
 
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
 
-<title>Trivia Stats - Trivia Stats</title>
-<meta property="og:title" content="Trivia Stats - Trivia Stats">
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
 
+        function setBodyClass() {
+          if (window.matchMedia("(prefers-color-scheme: dark)").matches || now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
 
-  <link href='/TriviaStats/favicon.ico' rel='icon' type='image/x-icon'/>
-
-
-
-  
-
-
-
-
-
-<link href="/TriviaStats/index.xml" rel="alternate" type="application/rss+xml" title="Trivia Stats" />
-
-
-
-<link rel="stylesheet" href="/TriviaStats/css/fonts.css" media="all">
-<link rel="stylesheet" href="/TriviaStats/css/main.css" media="all">
-
-
-
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
   </head>
-  <body>
-    <div class="wrapper">
-      <header class="header">
-        <nav class="nav">
-  <a href="/TriviaStats/" class="nav-logo">
-    <img src="/TriviaStats/images/logo.png"
-         width="50"
-         height="50"
-         alt="Logo">
-  </a>
-
-  <ul class="nav-links">
-    
-    <li><a href="/TriviaStats/about/">About</a></li>
-    
-    <li><a href="https://github.com/pinarda/TriviaStats">GitHub</a></li>
-    
-  </ul>
-</nav>
-
-      </header>
-
-
-<main class="content" role="main">
-
-  
-  <div class="archive">
-    
-    
-    
-    
-    
-    <h2 class="archive-title">2020</h2>
-    
-    <article class="archive-item">
-      <a href="/TriviaStats/2020/08/18/trivia-plots/" class="archive-item-link">Trivia Plots</a>
-      <span class="archive-item-date">
-        2020-08-18
-      </span>
-    </article>
-    
-    <article class="archive-item">
-      <a href="/TriviaStats/2020/08/18/notes-and-ideas/" class="archive-item-link">Notes and Ideas</a>
-      <span class="archive-item-date">
-        2020-08-18
-      </span>
-    </article>
-    
-    
-  </div>
-
-</main>
-
-      <footer class="footer">
-        <ul class="footer-links">
+  <body class="list home">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        <h1 class="logo"><a href="/TriviaStats/">Hail Science Trivia Statistics</a></h1>
+        <ul class="menu">
           <li>
-            <a href="/TriviaStats/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
-          </li>
-          <li>
-            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/TriviaStats/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+            <a href="https://github.com/pinarda/TriviaStats">GitHub</a>
           </li>
         </ul>
-      </footer>
+      </nav>
+    </header>
+    <main class="main">
 
-    </div>
-    
+<header class="page-header"><h1>Hail Science Trivia Statistics</h1></header>
 
-    
-
-    
-  </body>
+<article class="first-entry">
+  <header class="entry-header">
+    <h2>Notes and Ideas</h2>
+  </header>
+  <section class="entry-content">
+   <p>Ideas Plot all mean scores (as line plots) on same plot - hover to highlight a single plot (https://stackoverflow.com/questions/52532428/highlight-all-values-from-a-group-on-hover) we might not be able to do this with a static site, look into it
+Get round labeled and do stuff (bias table/plot for round types maybe)
+do score prediction based on difficulty, player average, and round label/maybe biases
+ To Do Finish player plots
+Format output so we don’t have to scroll through dozens of charts to find the right one...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>August 18, 2020</time>
+  </footer>
+  <a class="entry-link" href="/TriviaStats/ideas/"></a>
+</article>
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>Trivia Plots</h2>
+  </header>
+  <section class="entry-content">
+   <p>First, load the trivia_stats.R source file, which contains all functions for generating statistics:
+source(&#34;trivia_stats.R&#34;) Bias Heatmap Each column represents the scores on one person’s round that week. Higher scores in a cell mean that the player scores higher than the average on that player’s rounds.
+Score Per Round = Average Player Ability &#43; Round Difficulty &#43; Bias &#43; Randomness
+bias_table_heatmap()  {&#34;x&#34;:{&#34;data&#34;:[{&#34;x&#34;:[1,2,3,4,5,6,7,8,9,10],&#34;y&#34;:[1,2,3,4,5,6,7,8,9,10],&#34;z&#34;:[[0.415041486900061,0.242873234725411,0.397943842327979,0.440519580970759,0,0.597206504583056,0.688081085051364,0.519325635023682,0.916028469546242,null],[0.419414574241059,0.468633868704414,0.30392246449653,0.764674680122209,0.520944029496343,0.527783743044719,0.559621644409558,0.351508408312898,null,0.669829725980493],[0.317709992058363,0.596922541026974,0.766876345042181,0.461557367539523,0.568201965794535,0.407047599835247,0.594676737723128,null,0.364269905289691,0.63026901653829],[0.496970702827423,0.454867634302601,0.636608320622964,0.522961268070893,0.418622776439328,0.358226272119865,null,0.422361413959389,0.714766115399155,0.346120926285473],[0.634575484060642,0.314282437179793,0.360209604423009,0.378186726772677,0.519972205446419,null,0.419354126527268,0.583499950333032,0.699778559114118,0.65583510506951],[0.481893445103378,0.474102407654847,0.40105321573919,0.433271642258553,null,0.40533947727097,0.328943466946118,0.417243557181454,0.645445870096199,1],[0.727512031765875,0.778781210920323,0.593160982863294,null,0.585105208781135,0.61932706625579,0.422146518962285,0.554941165139572,0.139600266503645,0.457256471967779],[0.178614864367821,0.493011811873328,null,0.56807849877569,0.60320106982552,0.503904988956263,0.541892544394381,0.808532602754776,0.619788369501278,0.192106501284127],[0.84076897187664,null,0.600989116651126,0.691467423864702,0.703432916285655,0.524143099882819,0.393425145244012,0.312609748464205,0.175522609426241,0.298849746174792],[null,0.68902640681357,0.451737661034988,0.631547785313022,0.593021381132325,0.56952280125253,0.564360283943147,0.542479072032253,0.237301388324693,0.262234059900797]],&#34;text&#34;:[[&#34;row: Drew...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>August 18, 2020</time>
+  </footer>
+  <a class="entry-link" href="/TriviaStats/2020-08-18-stats/"></a>
+</article></main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="/TriviaStats/">Hail Science Trivia Statistics</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="/TriviaStats/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
 </html>
 
