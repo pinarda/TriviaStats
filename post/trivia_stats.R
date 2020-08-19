@@ -345,7 +345,7 @@ creator_overlay_plot <- function(){
     theme_bw() +
     xlab("Trivia Week") + 
     ylab("Round Score") + 
-    ggtitle(label=paste("How well everyone did on everyone else's Rounds (hover to see detail)")) + 
+    ggtitle(label=paste("How well everyone did on everyone else's rounds (hover to see detail)")) + 
     theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5)) 
   
   gg <- ggplotly(p, tooltip="groups")
