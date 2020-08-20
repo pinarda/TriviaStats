@@ -4,6 +4,7 @@ library(plotly)
 library(ggplot2)
 library(RColorBrewer)
 library(heatmaply)
+library(forcats)
 
 
 # should match excel sheet names
@@ -97,6 +98,9 @@ get_normalized_final_score <- function(player, date){
   if (date %in% c("March18", "March25")){
     normalized_score = raw_score * 0.9
   }
+  if (date %in% c("August12")){
+    normalized_score = raw_score * 1.24
+  }
   return(normalized_score)
 }
 
@@ -104,6 +108,30 @@ get_normalized_final_score <- function(player, date){
 get_mean_round_score <- function(player, creator){
   #return(mean(mapply(get_round_score, player, creator, dates), na.rm=TRUE))
   return(mean(sapply(dates, get_round_score, player=player, creator=creator), na.rm=TRUE))
+}
+
+get_all_scores_player_creator <- function(player, creator){
+  #return(mean(mapply(get_round_score, player, creator, dates), na.rm=TRUE))
+  return(sapply(dates, get_round_score, player=player, creator=creator), na.rm=TRUE)
+}
+
+get_all_scores_by_player <- function(player){
+  l = lapply(players, function(creator){data.frame(day = dates, val = sapply(dates, get_round_score, player=player, creator=creator), class=creator)})
+  ka=rbind(l[[1]], l[[2]], l[[3]], l[[4]], l[[5]], l[[6]], l[[7]], l[[8]], l[[9]], l[[10]])
+  return(ka)
+}
+
+scores_boxplot_player <- function(player){
+  s = get_all_scores_by_player(player)
+  s$class <- as.factor(s$class)
+  s %>%
+    mutate(name = fct_reorder(day, val, .fun="median")) %>%
+    ggplot( aes(x=day, y=val, fill=class)) + 
+      geom_boxplot() +
+      xlab("creator") +
+      theme(legend.position="none") +
+      xlab("") +
+      xlab("")
 }
 
 get_mean_by_player <- function(player){

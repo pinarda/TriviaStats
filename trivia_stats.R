@@ -4,6 +4,9 @@ library(plotly)
 library(ggplot2)
 library(RColorBrewer)
 library(heatmaply)
+library(forcats)
+library(dplyr)
+library(ggridges)
 
 
 # should match excel sheet names
@@ -100,6 +103,37 @@ get_normalized_final_score <- function(player, date){
   return(normalized_score)
 }
 
+get_all_scores_by_player <- function(player){
+  l = lapply(players, function(creator){data.frame(day = dates, val = sapply(dates, get_round_score, player=player, creator=creator), class=creator)})
+  ka=rbind(l[[1]], l[[2]], l[[3]], l[[4]], l[[5]], l[[6]], l[[7]], l[[8]], l[[9]], l[[10]])
+  return(ka)
+}
+
+scores_boxplot_player <- function(player){
+  s = get_all_scores_by_player(player)
+  s <- na.omit(s)
+  
+  #s %>%
+  #  mutate(name = fct_reorder(class, val, .fun="mean")) %>%
+  #  ggplot( aes(x=reorder(class, val), y=val, fill=class)) + 
+  #  geom_boxplot() +
+  #  xlab("creator") +
+  #  theme(legend.position="none") +
+  #  ylab("score")
+  
+  s %>%
+    mutate(name = fct_reorder(class, val, .fun="mean")) %>%
+    ggplot( aes(y=reorder(class, val), x=val, fill=class)) + 
+    geom_density_ridges(alpha=0.6, stat="binline", bins=6) +
+    theme_ridges() +
+    xlab("Score") +
+    theme(legend.position="none",
+          panel.spacing = unit(0.2, "lines"),
+          strip.text.x = element_text(size = 8)) +
+    ylab("Creator") + 
+    ggtitle(paste(player, "'s Scores by Creator")) +
+    theme(plot.title=element_text(vjust=0.5))
+}
 
 get_mean_round_score <- function(player, creator){
   #return(mean(mapply(get_round_score, player, creator, dates), na.rm=TRUE))
@@ -356,6 +390,16 @@ bias_table_heatmap <- function(){
   coul <- colorRampPalette(brewer.pal(8, "PiYG"))(25)
   heatmaply(bt, dendrogram = "none", labCol = colnames(bt), labRow = rownames(bt), colors=coul, xlab="Creator", ylab="Player", main="Bias Table")
 }
+
+joker_table_heatmap <- function(){
+  jt = joker_table()
+  jt[4, 4] = NA # Jenny is a problem hack
+  
+  coul <- colorRampPalette(brewer.pal(8, "PiYG"))(25)
+  heatmaply(jt, dendrogram = "none", labCol = colnames(jt), labRow = rownames(jt), colors=coul, xlab="Creator", ylab="Player", main="Who do I Joker Table")
+}
+
+
 
 # don't run this too much or google gets upset
 if(IS_GOOGLE_UPSET){
