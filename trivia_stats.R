@@ -10,7 +10,7 @@ library(ggridges)
 
 
 # should match excel sheet names
-dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12", "August19")
+dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12", "August19", "September3")
 
 # to get id:
 # right click on file in drive -> get shareable link -> copy id substring
@@ -65,6 +65,12 @@ get_round_score <- function(player, creator, date){
   round_score = unlist(creators_scores, use.names=FALSE)[index]
   
   return(round_score)
+}
+
+joker_score <- function(date, player){
+  score_frame = as.data.frame(scores[which(dates==date)])
+  index = which(score_frame$Player==player)
+  
 }
 
 get_creator_round_scores <- function(creator, date){
