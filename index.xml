@@ -11,17 +11,29 @@
     
     
     <item>
-      <title>01 - Trivia Plots</title>
+      <title>01 - Joker Stats</title>
+      <link>/TriviaStats/2020-09-09-jokers/</link>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/TriviaStats/2020-09-09-jokers/</guid>
+      <description>First, load the trivia_stats.R source file, which contains all functions for generating statistics:
+source(&amp;quot;trivia_stats.R&amp;quot;) Joker Table This chart takes into account both the creators’s average round difficulty and your own bias toward or against that creator to given you an overall sense of how much better than average you tend to do on rounds made by that creator (and therefore, who you should pick to joker today).</description>
+    </item>
+    
+    <item>
+      <title>02 - Other Trivia Plots</title>
       <link>/TriviaStats/2020-08-18-stats/</link>
       <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>/TriviaStats/2020-08-18-stats/</guid>
       <description>First, load the trivia_stats.R source file, which contains all functions for generating statistics:
-source(&amp;quot;trivia_stats.R&amp;quot;) Joker Table The only practical chart I have made so far. This chart takes into account both the creators’s average round difficulty and your own bias toward or against that creator to given you an overall sense of how much better than average you tend to do on rounds made by that creator (and therefore, who you should pick to joker today).</description>
+source(&amp;quot;trivia_stats.R&amp;quot;) Bias Heatmap Each column represents the scores on one person’s round that week. Higher scores in a cell mean that the player tends to gain more points than other players on that creator’s rounds.
+Estimated Score Per Round = Average Score + Round Difficulty + Bias
+bias_table_heatmap()  {&#34;x&#34;:{&#34;data&#34;:[{&#34;x&#34;:[1,2,3,4,5,6,7,8,9,10],&#34;y&#34;:[1,2,3,4,5,6,7,8,9,10],&#34;z&#34;:[[0.457832251095116,0.204573653209052,0.312355557072264,0.418079497240924,0,0.679537934774561,0.672117432830801,0.502825530725447,0.880915936844128,null],[0.46391412529225,0.440273723628655,0.380485721814884,0.831032168358939,0.429353970848191,0.577726921590053,0.641444587150672,0.110533666898056,null,0.736492770991616],[0.286252705813453,0.660923640273063,0.825822193510803,0.499882420079933,0.624959924429654,0.404017622528166,0.667119763121893,null,0.271441449368841,0.555274443137601],[0.509613752133982,0.455419972482599,0.620606425401427,0.504262799407295,0.356664343436311,0.378240097468978,null,0.445208851459171,0.685666664058962,0.50473029679911],[0.612848933181994,0.365996930498079,0.334329494578982,0.40171161829189,0.548439869273378,null,0.461958188395198,0.630759787639605,0.692888566743221,0.6115456339895],[0.511198183810367,0.446009710385876,0.443620445685933,0.508637545560421,null,0.424077440276704,0.372732933348514,0.488768626832621,0.516980137218979,1],[0.729335874633163,0.82557645894917,0.611919235570371,null,0.626535774323792,0.650878012648296,0.381151118507467,0.598196321016539,0.200353751948564,0.398820944712068],[0.156691075643463,0.49641694536408,null,0.615695918403309,0.652651085585134,0.436492929451485,0.520959227200881,0.909696327646327,0.544996101723668,0.292921566959435],[0.854860496272051,null,0.613544882139132,0.693382433577032,0.722156018141394,0.47278618341652,0.346698065796594,0.333202910652585,0.350776732213985,0.23623598795822],[null,0.687356363085264,0.439863442102043,0.561395863938344,0.621786411837985,0.558790255721075,0.518366081523821,0.563355375005489,0.438528057755491,0.24652575332829]],&#34;text&#34;:[[&#34;row: Drew</description>
     </item>
     
     <item>
-      <title>02 - Notes and Ideas</title>
+      <title>03 - Notes and Ideas</title>
       <link>/TriviaStats/ideas/</link>
       <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
       
@@ -30,7 +42,7 @@ source(&amp;quot;trivia_stats.R&amp;quot;) Joker Table The only practical chart 
 do score prediction based on difficulty, player average, and round label/maybe biases
  To Do Finish player plots
 Format output so we don’t have to scroll through dozens of charts to find the right one
-Format bias table and plot it, make a bar chart for the biases for each person
+Whose nights get Jokered most, how often was it the correct choice to joker their rounds
  </description>
     </item>
     

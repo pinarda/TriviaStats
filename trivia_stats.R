@@ -7,6 +7,8 @@ library(heatmaply)
 library(forcats)
 library(dplyr)
 library(ggridges)
+library(gplots) # not to be confused with `ggplot2`, which is a very different package
+
 
 
 # should match excel sheet names
@@ -43,6 +45,31 @@ get_overall_normalized_mean <- function(score_frame, date){
   return(normalized_mean)
 }
 
+get_judgement_score_on_date <- function(date, player){
+  score_frame = as.data.frame(scores[which(dates==date)])
+  index = which(score_frame$Player==player)
+
+  val = score_frame$Joker.Bonus[index] - mean(c(score_frame$X1[index], score_frame$X2[index],score_frame$X3[index],score_frame$X4[index],score_frame$X5[index],score_frame$X6[index],score_frame$X7[index],score_frame$X8[index]), na.rm=TRUE)
+  if(identical(val, numeric(0))){
+    return(NA)
+  }
+  return(val)
+}
+
+get_judgement_score_by_player <- function(player){
+  js = sapply(dates, get_judgement_score_on_date, player=player)
+  return(mean(js, na.rm=TRUE))
+}
+
+get_judgement_table <- function(){
+  t = sapply(players, get_judgement_score_by_player)
+  coul <- colorRampPalette(brewer.pal(8, "YlGn"), bias=1)(25)
+  t = as.matrix(sort(t, decreasing=TRUE))
+  
+  heatmaply(t, limits=c(0, 1.9),dendrogram = "none", colors=coul, ylab="Player", main="Average points gained by using judgement to select joker", showticklabels = c(FALSE, TRUE))
+  
+}
+
 get_round_score <- function(player, creator, date){
   score_frame = as.data.frame(scores[which(dates==date)])
   # creator's row in dataframe
@@ -67,10 +94,143 @@ get_round_score <- function(player, creator, date){
   return(round_score)
 }
 
-joker_score <- function(date, player){
+correct_joker_score_by_date_and_player <- function(date, player){
+  correct_jokers = 0
+  play_count = 0
   score_frame = as.data.frame(scores[which(dates==date)])
+  
+
+  
   index = which(score_frame$Player==player)
   
+  # exit if not in scoresheet
+  if(is.integer(index) && length(index) == 0L || is.na(index)){
+    return(c(play_count, correct_jokers))
+  }
+  
+  # exit if no rounds scores
+  if(max(score_frame$X1[index], score_frame$X2[index], score_frame$X3[index], score_frame$X4[index], score_frame$X5[index], score_frame$X6[index], score_frame$X7[index], score_frame$X8[index], na.rm=TRUE) == -Inf){
+    return(c(play_count, correct_jokers))
+  }
+  
+  play_count = play_count + 1
+  if (max(score_frame$X1[index], score_frame$X2[index], score_frame$X3[index], score_frame$X4[index], score_frame$X5[index], score_frame$X6[index], score_frame$X7[index], score_frame$X8[index], na.rm=TRUE) == score_frame$Joker.Bonus[index]){
+    correct_jokers=correct_jokers+1
+  }
+  return(c(play_count, correct_jokers))
+}
+
+ichigo_coefficient <- function(date, player){ 
+  score_frame = as.data.frame(scores[which(dates==date)])
+  index = which(score_frame$Player==player)
+  ichigo_index = which(score_frame$Player=="Ichigo")
+  ichigo_joker_round = score_frame$Joker.Round[ichigo_index]
+  
+  if(is.integer(ichigo_index) && length(ichigo_index) == 0L){
+    return(NA)
+  }
+  if(is.integer(index) && length(index) == 0L){
+    return(NA)
+  }
+  if(is.na(score_frame[index, ichigo_joker_round + 4])){
+    return(0)
+  }
+  
+  return(score_frame[index, ichigo_joker_round + 4] - as.numeric(score_frame$Joker.Bonus[index]))
+}
+
+ichigo_coefficient_by_player <- function(player){
+  is = sapply(dates, ichigo_coefficient, player=player)
+  return(mean(is, na.rm=TRUE))
+}
+
+ichigo_coefficient_table <- function(){
+  ist = sapply(players, ichigo_coefficient_by_player)
+  coul <- colorRampPalette(brewer.pal(8, "PiYG"), bias=1)(25)
+  ist = as.matrix(sort(ist, decreasing=TRUE))
+  
+  heatmaply(ist, limits=c(-1.1, 1.1),dendrogram = "none", colors=coul, ylab="Player", main="Points gained by copying Ichigo's Joker", showticklabels = c(FALSE, TRUE))
+}
+
+
+chris_coefficient <- function(date, player){ 
+  score_frame = as.data.frame(scores[which(dates==date)])
+  index = which(score_frame$Player==player)
+  chris_index = which(score_frame$Player=="Chris")
+  chris_joker_round = score_frame$Joker.Round[chris_index]
+  
+  if(is.integer(chris_index) && length(chris_index) == 0L){
+    return(NA)
+  }
+  if(is.integer(index) && length(index) == 0L){
+    return(NA)
+  }
+  if(is.null(score_frame[index, chris_joker_round + 4]) || is.na(score_frame[index, chris_joker_round + 4])){
+    return(0)
+  }
+  
+  return(score_frame[index, chris_joker_round + 4] - as.numeric(score_frame$Joker.Bonus[index]))
+}
+
+chris_coefficient_by_player <- function(player){
+  is = sapply(dates, chris_coefficient, player=player)
+  return(mean(is, na.rm=TRUE))
+}
+
+chris_coefficient_table <- function(){
+  ist = sapply(players, chris_coefficient_by_player)
+  coul <- colorRampPalette(brewer.pal(8, "PiYG"), bias=1)(25)
+  ist = as.matrix(sort(ist, decreasing=TRUE))
+  
+  heatmaply(ist, limits=c(-1.1, 1.1),dendrogram = "none", colors=coul, ylab="Player", main="Points gained by copying Chris's Joker", showticklabels = c(FALSE, TRUE))
+}
+
+jenny_coefficient <- function(date, player){ 
+  score_frame = as.data.frame(scores[which(dates==date)])
+  index = which(score_frame$Player==player)
+  jenny_index = which(score_frame$Player=="Jenny")
+  jenny_joker_round = score_frame$Joker.Round[jenny_index]
+  
+  if(is.integer(jenny_index) && length(jenny_index) == 0L){
+    return(NA)
+  }
+  if(is.integer(index) && length(index) == 0L){
+    return(NA)
+  }
+  if(is.null(score_frame[index, jenny_joker_round + 4]) || is.na(score_frame[index, jenny_joker_round + 4])){
+    return(0)
+  }
+  
+  return(score_frame[index, jenny_joker_round + 4] - as.numeric(score_frame$Joker.Bonus[index]))
+}
+
+jenny_coefficient_by_player <- function(player){
+  is = sapply(dates, jenny_coefficient, player=player)
+  return(mean(is, na.rm=TRUE))
+}
+
+jenny_coefficient_table <- function(){
+  ist = sapply(players, jenny_coefficient_by_player)
+  coul <- colorRampPalette(brewer.pal(8, "PiYG"), bias=1)(25)
+  ist = as.matrix(sort(ist, decreasing=TRUE))
+  
+  heatmaply(ist, limits=c(-1.1, 1.1),dendrogram = "none", colors=coul, ylab="Player", main="Points gained by copying Jenny's Joker", showticklabels = c(FALSE, TRUE))
+}
+
+correct_joker_score_by_player <-function(player){
+  scores_1 = sapply(dates, correct_joker_score_by_date_and_player, player=rep(player, length(dates)))
+  return(sum(scores_1[2,])/sum(scores_1[1,]))
+}
+
+correct_jokers <- function(){
+  scores_2 = sapply(players, correct_joker_score_by_player)
+  return(sort(scores_2, decreasing=TRUE))
+}
+
+correct_joker_plot <- function(){
+  cj = as.matrix(correct_jokers())
+  coul <- colorRampPalette(brewer.pal(8, "Blues"))(25)
+  heatmaply(cj, dendrogram = "none", colors=coul, ylab="Player", main="% of Correct Jokers", showticklabels = c(FALSE, TRUE))
 }
 
 get_creator_round_scores <- function(creator, date){
@@ -118,6 +278,7 @@ get_all_scores_by_player <- function(player){
 scores_boxplot_player <- function(player){
   s = get_all_scores_by_player(player)
   s <- na.omit(s)
+  s <- s[s$class != player,]
   
   #s %>%
   #  mutate(name = fct_reorder(class, val, .fun="mean")) %>%
@@ -130,7 +291,7 @@ scores_boxplot_player <- function(player){
   s %>%
     mutate(name = fct_reorder(class, val, .fun="mean")) %>%
     ggplot( aes(y=reorder(class, val), x=val, fill=class)) + 
-    geom_density_ridges(alpha=0.6, stat="binline", bins=6) +
+    geom_density_ridges(alpha=0.6, stat="binline", bins=8) +
     theme_ridges() +
     xlab("Score") +
     theme(legend.position="none",
@@ -144,6 +305,28 @@ scores_boxplot_player <- function(player){
 get_mean_round_score <- function(player, creator){
   #return(mean(mapply(get_round_score, player, creator, dates), na.rm=TRUE))
   return(mean(sapply(dates, get_round_score, player=player, creator=creator), na.rm=TRUE))
+}
+
+get_winner <- function(date){
+  score_frame = as.data.frame(scores[which(dates==date)])
+  player_w=score_frame$Player[which(score_frame$Score == max(score_frame$Score, na.rm=TRUE))]
+  if (date=="May27"){
+    player_w = "Dad"
+  }
+  return(player_w)
+}
+
+get_winner_wo_joker <- function(date){
+  score_frame = as.data.frame(scores[which(dates==date)])
+  player_w=score_frame$Player[which(score_frame$Score - score_frame$Joker.Bonus == max(score_frame$Score - score_frame$Joker.Bonus, na.rm=TRUE))]
+  return(player_w)
+}
+
+
+joker_win_percent <- function(){
+  wj = sapply(dates, get_winner)
+  woj = sapply(dates, get_winner_wo_joker)
+  return((1 - sum(wj == woj)/length(dates)) * 100)
 }
 
 get_mean_by_player <- function(player){
