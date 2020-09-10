@@ -149,7 +149,7 @@ ichigo_coefficient_table <- function(){
   coul <- colorRampPalette(brewer.pal(8, "PiYG"), bias=1)(25)
   ist = as.matrix(sort(ist, decreasing=TRUE))
   
-  heatmaply(ist, limits=c(-1.1, 1.1),dendrogram = "none", colors=coul, ylab="Player", main="Points gained by copying Ichigo's Joker", showticklabels = c(FALSE, TRUE))
+  heatmaply(ist, limits=c(-1.3, 1.3),dendrogram = "none", colors=coul, ylab="Player", main="Points gained by copying Ichigo's Joker", showticklabels = c(FALSE, TRUE))
 }
 
 
