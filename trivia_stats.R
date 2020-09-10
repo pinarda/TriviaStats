@@ -12,7 +12,7 @@ library(gplots) # not to be confused with `ggplot2`, which is a very different p
 
 
 # should match excel sheet names
-dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12", "August19", "September3")
+dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9")
 
 # to get id:
 # right click on file in drive -> get shareable link -> copy id substring
@@ -337,6 +337,20 @@ get_mean_by_player <- function(player){
 get_mean_by_creator <- function(creator){
   scores = (sapply(players, get_mean_round_score, creator=creator))
   return (scores)
+}
+
+get_joker_bonus_by_night <- function(date){
+  score_frame = as.data.frame(scores[which(dates==date)])
+  jokers = score_frame$Joker.Bonus
+  jokers = jokers[!is.na(jokers)]
+  jokers = jokers[jokers>0]
+  
+  return(jokers)
+}
+
+get_all_joker_bonuses <- function(){
+  js = sapply(dates, get_joker_bonus_by_night)
+  return(js)
 }
 
 get_creator_score <- function(creator){
