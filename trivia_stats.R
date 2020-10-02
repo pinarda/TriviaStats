@@ -12,7 +12,7 @@ library(gplots) # not to be confused with `ggplot2`, which is a very different p
 
 
 # should match excel sheet names
-dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9", "September17")
+dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9", "September17", "September24", "October1")
 
 # to get id:
 # right click on file in drive -> get shareable link -> copy id substring
