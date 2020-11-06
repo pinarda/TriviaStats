@@ -80,14 +80,15 @@
     </header>
     <main class="main">
 
-<header class="page-header"><h1></h1></header>
+<header class="page-header"><h1>Hail Science Trivia</h1></header>
 
-<article class="post-entry">
+<article class="first-entry">
   <header class="entry-header">
     <h2>01 - Joker Stats</h2>
   </header>
   <section class="entry-content">
-   <p></p>
+   <p>First, load the trivia_stats.R source file, which contains all functions for generating statistics:
+source(&#34;trivia_stats.R&#34;) Joker Table This chart takes into account both the creators’s average round difficulty and your own bias toward or against that creator to given you an overall sense of how much better than average you tend to do on rounds made by that creator (and therefore, who you should pick to joker today)....</p>
   </section>
   <footer class="entry-footer">
     <time>September 9, 2020</time>
@@ -99,7 +100,10 @@
     <h2>02 - Other Trivia Plots</h2>
   </header>
   <section class="entry-content">
-   <p></p>
+   <p>First, load the trivia_stats.R source file, which contains all functions for generating statistics:
+source(&#34;trivia_stats.R&#34;) Bias Heatmap Each column represents the scores on one person’s round that week. Higher scores in a cell mean that the player tends to gain more points than other players on that creator’s rounds.
+Estimated Score Per Round = Average Score &#43; Round Difficulty &#43; Bias
+bias_table_heatmap()  {&#34;x&#34;:{&#34;data&#34;:[{&#34;x&#34;:[1,2,3,4,5,6,7,8,9,10],&#34;y&#34;:[1,2,3,4,5,6,7,8,9,10],&#34;z&#34;:[[0.643423551882358,0.0783067474347897,0.0603099527111233,0.538700111240386,0,0.408290961931518,0.719558898669402,0.275756212598568,0.976662384755141,null],[0.410462202779089,0.389228159663334,0.264363173239381,0.849621523468931,0.482673863175433,0.410057962455663,0.594283610080451,0.128671088968743,null,0.565441535155751],[0.15684491088462,0.539478044089629,0.866645595230241,0.450997743106677,0.469770233592891,0.426092018547809,0.680490810416612,null,0.345366400829932,0.338404979717348],[0.317491855382005,0.355768529918901,0.710971950245351,0.417871521034265,0.21920656520388,0.378320161793404,null,0.464429008745224,0.737862414100651,0.266533255242776],[0.495976423623412,0.350076652223745,0.208086204024218,0.427540748290926,0.411615773939386,null,0.403221860312682,0.555521620154485,0.634880538850734,0.582118464152313],[0.47926262783213,0.336774031009446,0.466941876509113,0.489232351160656,null,0.444369047116559,0.347358452312097,0.463341532290382,0.390725554997263,0.864670996535967],[0.666615293920386,0.892544115820098,0.566607320661354,null,0.641245722265643,0.686539242235602,0.257112179261305,0.497162610327373,0.100670582677264,0.534540452328361],[0.0938366614276994,0.482277848529463,null,0.559741944596645,0.522998491342451,0.380640686298793,0.460996994541415,1,0.446477160055594,0.199062307617366],[0.809452637246715,null,0.580630325777516,0.659275517667284,0.746715943327647,0.443555862420369,0.179494574585439,0.198903044098639,0.201233590855072,0.27060659238555],[null,0.648912036289009,0.348809766580115,0.455931017003686,0.579139572131083,0.495500222178697,0.430848784799011,0.489581047795,0.239487537856763,0.451987581842982]],&#34;text&#34;:[[&#34;row: Drew...</p>
   </section>
   <footer class="entry-footer">
     <time>August 18, 2020</time>
@@ -111,7 +115,12 @@
     <h2>03 - Notes and Ideas</h2>
   </header>
   <section class="entry-content">
-   <p></p>
+   <p> Ideas Get rounds labeled and do stuff (bias table/plot for round types maybe)
+do score prediction based on difficulty, player average, and round label/maybe biases
+ To Do Finish player plots
+Format output so we don’t have to scroll through dozens of charts to find the right one
+Whose nights get Jokered most, how often was it the correct choice to joker their rounds
+ ...</p>
   </section>
   <footer class="entry-footer">
     <time>August 18, 2020</time>
