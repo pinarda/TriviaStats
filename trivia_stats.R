@@ -8,15 +8,16 @@ library(forcats)
 library(dplyr)
 library(ggridges)
 library(gplots) # not to be confused with `ggplot2`, which is a very different package
+library(useful)
 
 
-
-# should match excel sheet names
-dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9", "September17", "September24", "October1")
+# should match csv file names
+dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June3", "June10", "June24", "July2", "July9", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9", "September17", "September24", "October1", "October8", "October15", "October22", "October29", "November5", "November12", "November19", "December3", "December10", "December17", "December31", "January7-21", "January14-21", "January21-21", "January28-21", "February4-21", "February11-21", "February25-21", "March4-21", "March11-21", "March18-21", "March25-21", "April1-21", "April8-21", "April15-21", "April22-21", "April29-21")
 
 # to get id:
 # right click on file in drive -> get shareable link -> copy id substring
-google_ids=c("1B8jDE1_m9ilwz2c3L__vRBVNlFRkYFY-", "1oYpePFo3TofyYfukndqi7cNR7d19NH9Y", "1qZAzHPoLqWtY-MwiiEzC2cwd2f57uCiP", "1SXQ46m6kqOu3N7uzghNcscKAe171TDz5", "1BSo_bW-Armwnn6qy3fPTimGLontMTTVa", "1mrl_UgL-PGat2d586NfNlXT6OfXkXDtZ", "11RXp1dqKN8DDiFfq0lKrACmbeb_yb-W2", "1KuFoEDJFprCrkGUzE7Bp_9V5Q_nDuA4T", "11RkmBiMfCrOeV1dY2C3l_KUTqAXT8s8R", "1-N2R3ZJp-ahf7WRJa9ODjVP7QaTNHShD", "1J0Kx3Kf-4kTb-tjvxbDMsz0gtU_CoFMM", "1gK9k4eVfbQ1U7SuQD9CWrysrIapHSK_Y", "1SlbPlTn8iIj1OA7pAkK9C9IepnX_rzob", "1MdkoCG544dbT0gwGNFNMwFTIHQjgW3Bg", "1mrwkdVQKv1wFMICeyE_eCD1NyAmpcRii", "14ldPagW4XGJTkKqv916fuQY3fB-lqqMn", "1v0GG0YjOwkSr1HML68P8cLTjtj8G8Owp", "1kEMwWBd0OWxnSdqjHarap-Oh0fT7rGR9", "1XpcLhGJGZ1Pphk_EXJBgB9njYkm9Y0G4", "1SLj6bd9OBZTbXwIpSHcxPg75mvBqA8jo")
+# NEEDS TO BE UPDATED, ONLY VALID UP TILL LIKE JULY22
+google_ids=c("1B8jDE1_m9ilwz2c3L__vRBVNlFRkYFY-", "1oYpePFo3TofyYfukndqi7cNR7d19NH9Y", "1qZAzHPoLqWtY-MwiiEzC2cwd2f57uCiP", "1SXQ46m6kqOu3N7uzghNcscKAe171TDz5", "1BSo_bW-Armwnn6qy3fPTimGLontMTTVa", "1mrl_UgL-PGat2d586NfNlXT6OfXkXDtZ", "11RXp1dqKN8DDiFfq0lKrACmbeb_yb-W2", "1KuFoEDJFprCrkGUzE7Bp_9V5Q_nDuA4T", "11RkmBiMfCrOeV1dY2C3l_KUTqAXT8s8R", "1-N2R3ZJp-ahf7WRJa9ODjVP7QaTNHShD", "1J0Kx3Kf-4kTb-tjvxbDMsz0gtU_CoFMM", "1gK9k4eVfbQ1U7SuQD9CWrysrIapHSK_Y", "1SlbPlTn8iIj1OA7pAkK9C9IepnX_rzob", "1MdkoCG544dbT0gwGNFNMwFTIHQjgW3Bg", "1mrwkdVQKv1wFMICeyE_eCD1NyAmpcRii", "14ldPagW4XGJTkKqv916fuQY3fB-lqqMn", "1v0GG0YjOwkSr1HML68P8cLTjtj8G8Owp", "1kEMwWBd0OWxnSdqjHarap-Oh0fT7rGR9")
 
 players=c("Zach", "Megan", "Ichigo", "Jenny", "Mom", "Dad", "Chris", "Alex", "Jeff", "Drew")
 
@@ -322,11 +323,22 @@ get_winner_wo_joker <- function(date){
   return(player_w)
 }
 
+get_winner_wo_creator <- function(date){
+  score_frame = as.data.frame(scores[which(dates==date)])
+  player_w=score_frame$Player[which(score_frame$Score - score_frame$Creator.Bonus == max(score_frame$Score - score_frame$Joker.Bonus, na.rm=TRUE))]
+  return(player_w)
+}
 
 joker_win_percent <- function(){
   wj = sapply(dates, get_winner)
   woj = sapply(dates, get_winner_wo_joker)
-  return((1 - sum(wj == woj)/length(dates)) * 100)
+  return((1 - sum(compare.list(wj, woj))/length(dates)) * 100)
+}
+
+no_creator_bonus_win_percent <- function(){
+  wj = sapply(dates, get_winner)
+  woj = sapply(dates, get_winner_wo_creator)
+  return((1 - sum(compare.list(wj, woj))/length(dates)) * 100)
 }
 
 get_mean_by_player <- function(player){
@@ -568,6 +580,103 @@ creator_mean_data <- function(creator){
   
   mean_data = data.frame(weeks=seq(1:length(means)), means, groups=creator)
   return(mean_data)
+}
+
+mean_round_score_by_date <- function(date){
+  s = scores[which(dates==date)][[1]]
+  
+  numP = 0
+  for (i in 1:length(players)){
+    if (!is.na(s[i,]$Score) && s[i,]$Score>0){
+      numP = numP+1
+    }
+  }
+  
+  sumScore = sum(c(na.omit(s$X1), 
+                      na.omit(s$X2),
+                      na.omit(s$X3),
+                      na.omit(s$X4),
+                      na.omit(s$X5),
+                      na.omit(s$X6),
+                      na.omit(s$X7),
+                      na.omit(s$X8)))
+  
+  numRounds = sum(any(!is.na(s$X1)),
+                  any(!is.na(s$X2)),
+                  any(!is.na(s$X3)),
+                  any(!is.na(s$X4)),
+                  any(!is.na(s$X5)),
+                  any(!is.na(s$X6)),
+                  any(!is.na(s$X7)),
+                  any(!is.na(s$X8)))
+  
+  meanRoundScore=sumScore/(numP-1)/numRounds
+  
+  return (c(meanRoundScore, numRounds))
+}
+
+overall_mean_round_score <- function(){
+  s = sapply(dates, mean_round_score_by_date)
+  sum=0
+  for (week in 1:length(s[1,])){
+    sum = sum + s[1,week] * s[2,week]
+  }
+  avg = sum/sum(s[2,])[[1]]
+  return(avg)
+}
+
+get_normalized_round_score_by_creator_and_date <- function(creator, date){
+  s <- get_creator_round_scores(creator, date)
+  l <- overall_mean_round_score()
+  if(any(!is.na(s))){
+    m = mean(na.omit(s)[[1]])
+    
+    r <- sapply(players,function(p){rawScore=get_round_score(p, creator, date)
+                              return(rawScore+(l[[1]]-m))})
+    return(r)
+  }
+}
+
+get_player_correlations <- function(){
+  
+  m = matrix(NA, ncol=10)
+  colnames(m) <- players
+  for (c in players){
+    s = lapply(dates, get_normalized_round_score_by_creator_and_date, creator=c)
+    x = matrix(unlist(s), ncol = 10, byrow=TRUE)
+    m = rbind(m, x)
+  }
+  
+  cov(m, use="pairwise.complete.obs")
+}
+
+get_player_similarity_scores <- function(){
+  cs = get_player_correlations()
+  crs = cov2cor(cs)
+  diag(crs) = NA
+  drs = crs - mean(crs, na.rm=TRUE)
+  return(drs)
+}
+
+player_similarity_table <- function(){
+  ss = get_player_similarity_scores()
+  
+  cbarMax = max(max(ss, na.rm=TRUE), abs(min(ss, na.rm=TRUE)))
+  
+  for(i in 1:length(ss[,1])){
+    for (j in 1:length(ss[1,])){
+      if (j>i){
+        #srs[i,j]=0
+      }
+    }
+  }
+  
+  coul <- colorRampPalette(brewer.pal(8, "PiYG"))(25)
+  heatmaply(ss, dendrogram = "none", labCol = colnames(ss), labRow = rownames(ss), xlab="Player", ylab="Player", main="Player Similarity Table", 
+            scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "firebrick", 
+                                                                    high = "forestgreen", 
+                                                                    midpoint = 0, 
+                                                                    limits = c(-1*cbarMax, cbarMax)))
 }
 
 creator_overlay_plot <- function(){
