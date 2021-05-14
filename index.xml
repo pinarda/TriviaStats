@@ -49,12 +49,12 @@ bias_table_heatmap()  {&#34;x&#34;:{&#34;data&#34;:[{&#34;x&#34;:[1,2,3,4,5,6,7,
       <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>/TriviaStats/ideas/</guid>
-      <description> Ideas Get rounds labeled and do stuff (bias table/plot for round types maybe)
+      <description>Ideas Get rounds labeled and do stuff (bias table/plot for round types maybe)
 do score prediction based on difficulty, player average, and round label/maybe biases
  To Do Finish player plots
 Format output so we don’t have to scroll through dozens of charts to find the right one
 Whose nights get Jokered most, how often was it the correct choice to joker their rounds
- </description>
+Clustering similar players using the covariance/similarity matrix</description>
     </item>
     
   </channel>
