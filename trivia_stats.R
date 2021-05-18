@@ -637,7 +637,32 @@ get_normalized_round_score_by_creator_and_date <- function(creator, date){
   }
 }
 
-get_player_correlations <- function(){
+get_raw_round_score_by_creator_and_date <- function(creator, date){
+  s <- get_creator_round_scores(creator, date)
+  l <- overall_mean_round_score()
+  if(any(!is.na(s))){
+    m = mean(na.omit(s)[[1]])
+    
+    r <- sapply(players,function(p){rawScore=get_round_score(p, creator, date)
+    return(rawScore)})
+    return(r)
+  }
+}
+
+get_raw_player_covariances <- function(){
+  
+  m = matrix(NA, ncol=10)
+  colnames(m) <- players
+  for (c in players){
+    s = lapply(dates, get_raw_round_score_by_creator_and_date, creator=c)
+    x = matrix(unlist(s), ncol = 10, byrow=TRUE)
+    m = rbind(m, x)
+  }
+  
+  cov(m, use="pairwise.complete.obs")
+}
+
+get_player_covariances <- function(){
   
   m = matrix(NA, ncol=10)
   colnames(m) <- players
@@ -650,12 +675,37 @@ get_player_correlations <- function(){
   cov(m, use="pairwise.complete.obs")
 }
 
+get_all_scores <- function(){
+  m = matrix(NA, ncol=10)
+  colnames(m) <- players
+  for (c in players){
+    s = lapply(dates, get_raw_round_score_by_creator_and_date, creator=c)
+    x = matrix(unlist(s), ncol = 10, byrow=TRUE)
+    m = rbind(m, x)
+  }
+  return(m)
+}
+
 get_player_similarity_scores <- function(){
-  cs = get_player_correlations()
+  cs = get_player_covariances()
   crs = cov2cor(cs)
   diag(crs) = NA
   drs = crs - mean(crs, na.rm=TRUE)
   return(drs)
+}
+
+get_player_covariance_scores <- function(){
+  cs = get_raw_player_covariances()
+  return(cs)
+}
+
+get_average_joker_round <- function(player){
+  js = sapply(dates, function(date){s = scores[which(dates==date)]
+  d = s[[1]]
+  r = d[which(d$Player==player),]
+  j = r$Joker.Bonus
+  })
+  mean(na.omit(js))
 }
 
 player_similarity_table <- function(){
@@ -675,6 +725,27 @@ player_similarity_table <- function(){
   heatmaply(ss, dendrogram = "none", labCol = colnames(ss), labRow = rownames(ss), xlab="Player", ylab="Player", main="Player Similarity Table", 
             scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "firebrick", 
                                                                     high = "forestgreen", 
+                                                                    midpoint = 0, 
+                                                                    limits = c(-1*cbarMax, cbarMax)))
+}
+
+player_covariance_table <- function(){
+  ss = get_player_covariance_scores()
+  
+  cbarMax = max(max(ss, na.rm=TRUE), abs(min(ss, na.rm=TRUE)))
+  
+  for(i in 1:length(ss[,1])){
+    for (j in 1:length(ss[1,])){
+      if (j>i){
+        #srs[i,j]=0
+      }
+    }
+  }
+  
+  coul <- colorRampPalette(brewer.pal(8, "PiYG"))(25)
+  heatmaply(ss, dendrogram = "none", labCol = colnames(ss), labRow = rownames(ss), xlab="Player", ylab="Player", main="Player Covariance Table", 
+            scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "firebrick", 
+                                                                    high = "forestgreen",
                                                                     midpoint = 0, 
                                                                     limits = c(-1*cbarMax, cbarMax)))
 }
@@ -699,16 +770,53 @@ creator_overlay_plot <- function(){
 }
 
 bias_table_heatmap <- function(){
-  coul <- colorRampPalette(brewer.pal(8, "PiYG"))(25)
-  heatmaply(bt, dendrogram = "none", labCol = colnames(bt), labRow = rownames(bt), colors=coul, xlab="Creator", ylab="Player", main="Bias Table")
+  cbarMax = max(max(bt, na.rm=TRUE), abs(min(bt, na.rm=TRUE)))
+  
+  heatmaply(bt, dendrogram = "none", labCol = colnames(bt), labRow = rownames(bt), xlab="Creator", ylab="Player", main="Bias Table", 
+            scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "violetred4", 
+                                                                    high = "palegreen4", 
+                                                                    midpoint = 0, 
+                                                                    limits = c(-1*cbarMax, cbarMax)))
+}
+
+krig <- function(){
+  drs = get_raw_player_covariances()
+  alexvec <- 1:length(drs[1,])
+  alexnum <- 8
+  alexvec <- alexvec[!alexvec %in% alexnum]
+  sigma21 <- as.matrix(drs[alexnum,alexvec])
+  sigma12 <- t(sigma21)
+  sigma22 <- drs[alexvec,alexvec]
+  sigma11 <- drs[alexnum, alexnum]
+  h <- get_all_scores()
+  alexmean <- mean(na.omit(h[,8]))
+  othermean <- c(get_player_score("Zach"),
+                 get_player_score("Megan"),
+                 get_player_score("Ichigo"),
+                 get_player_score("Jenny"),
+                 get_player_score("Mom"),
+                 get_player_score("Dad"),
+                 get_player_score("Chris"),
+                 get_player_score("Jeff"),
+                 get_player_score("Drew"))
+  
+  roundscores <- c(7, 7, 4, 8, 3, 2, 5, 2, 2)
+  
+  mu <- alexmean + sigma12 %*% solve(sigma22) %*% (roundscores - othermean)
+  sig <- sigma11 - sigma12 %*% solve(sigma22) %*% sigma21
+  rnorm(1, mu, sig)
 }
 
 joker_table_heatmap <- function(){
   jt = joker_table()
   jt[4, 4] = NA # Jenny is a problem hack
+  cbarMax = max(max(jt, na.rm=TRUE), abs(min(jt, na.rm=TRUE)))
   
-  coul <- colorRampPalette(brewer.pal(8, "PiYG"))(25)
-  heatmaply(jt, dendrogram = "none", labCol = colnames(jt), labRow = rownames(jt), colors=coul, xlab="Creator", ylab="Player", main="Who do I Joker Table")
+  heatmaply(jt, dendrogram = "none", labCol = colnames(jt), labRow = rownames(jt), xlab="Creator", ylab="Player", main="Who do I Joker Table", 
+            scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "indianred4", 
+                                                                    high = "darkolivegreen", 
+                                                                    midpoint = 0, 
+                                                                    limits = c(-1*cbarMax, cbarMax)))
 }
 
 
