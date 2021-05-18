@@ -16,7 +16,7 @@
       <pubDate>Mon, 17 May 2021 00:00:00 +0000</pubDate>
       
       <guid>/TriviaStats/2021-5-17-roboalex_1.0/</guid>
-      <description>roboAlex 1.0 roboAlex 1.0 is simple. He knows three things: The how well human Alex does on a typical round, whether or not human Alex jokered the current trivia round (this one is cheating a bit), and how well everyone else did on the current trivia round. I wish I only had to know three things.
+      <description>roboAlex 1.0 roboAlex 1.0 is simple. He knows three things: how well human Alex does on a typical round, whether or not human Alex jokered the current trivia round (this one is cheating a bit), and how well everyone else did on the current trivia round. I wish I only had to know three things.
 Below I’ll go into more detail about how each of these factors contribute to the overall score.</description>
     </item>
     
