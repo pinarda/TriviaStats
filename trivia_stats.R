@@ -829,7 +829,7 @@ if(IS_GOOGLE_UPSET){
 }
 
 scores = lapply(filenames, read.csv)
-#bt = bias_table()
-#bt[4, 4] = NA # Jenny had a bias on her own rounds, this is a hack
+bt = bias_table()
+bt[4, 4] = NA # Jenny had a bias on her own rounds, this is a hack
 
 
