@@ -779,49 +779,6 @@ bias_table_heatmap <- function(){
                                                                     limits = c(-1*cbarMax, cbarMax)))
 }
 
-plot_3d_similarity_rgl <- function(){
-  library(pcaMethods)
-  library(rgl)
-  my_bpca = pca(m[2:length(m[,1]),c(1:8, 10)], "bpca", nPcs=8)
-  dat <- read.table(textConnection(" Name             PC2         PC3         PC4
-Zach    0.2241316 -0.22353987  0.16206292
-Megan   0.5844217 -0.31900462 -0.02282969
-Ichigo -0.4183210 -0.06697746 -0.89514362
-Jenny   0.8316958 -0.46624533  0.06484492
-Mom     0.7026414  0.69724700 -0.10678688
-Dad    -0.4264668 -0.31471333  0.57878424
-Chris  -0.5044915  0.40759882  0.04716477
-Alex   -0.6761419 -0.30740131 -0.12161503
-Drew   -0.2873242  1.09548299  0.34870422"),
-                    header=TRUE,as.is=TRUE)
-  
-  # scale aspect to size of each principal component
-  with(dat,plot3d(PC2, PC3, PC4, size=10, aspect=c(0.09867, 0.07604, 0.05431)))
-  with(dat,text3d(PC2, PC3, PC4, Name))
-}
-
-plot_3d_similarity_plotly <- function(){
-  dat <- read.table(textConnection(" Name             PC2         PC3         PC4
-Zach    0.2241316 -0.22353987  0.16206292
-Megan   0.5844217 -0.31900462 -0.02282969
-Ichigo -0.4183210 -0.06697746 -0.89514362
-Jenny   0.8316958 -0.46624533  0.06484492
-Mom     0.7026414  0.69724700 -0.10678688
-Dad    -0.4264668 -0.31471333  0.57878424
-Chris  -0.5044915  0.40759882  0.04716477
-Alex   -0.6761419 -0.30740131 -0.12161503
-Drew   -0.2873242  1.09548299  0.34870422"),
-                    header=TRUE,as.is=TRUE)
-  
-  fig1 <- plot_ly(dat, x = ~PC2, y = ~PC3, z = ~PC4, name=~Name, scene="scene1",  type="scatter3d", text=~Name, mode="markers+text", showlegend=FALSE)
-  fig1 <- fig1 %>% layout(title = "3D Player Similarity (proximity implies similarity)",
-                        # select the type of aspectmode
-                        scene1 = list(aspectmode='manual',
-                        aspectratio = list(x=0.9867, y=0.7604, z=0.5431)))
-  add_trace(fig1, text=~Name, textposition="top center")
-  fig1
-}
-
 krig <- function(){
   drs = get_raw_player_covariances()
   alexvec <- 1:length(drs[1,])
