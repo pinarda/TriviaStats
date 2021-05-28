@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Hail Science Trivia</title>
-    <link>/TriviaStats/tags/</link>
+    <link>TriviaStats/tags/</link>
     <description>Recent content in Tags on Hail Science Trivia</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="/TriviaStats/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="TriviaStats/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
