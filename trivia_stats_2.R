@@ -16,7 +16,7 @@ library(grid) # for textGrob
 
 
 # should match csv file names
-dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June2", "June10", "June24", "July2", "July8", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9", "September17", "September24", "October1", "October8", "October15", "October22", "October29", "November5", "November12", "November19", "December3", "December10", "December17", "December31", "January7-21", "January14-21", "January21-21", "January28-21", "February4-21", "February11-21", "February25-21", "March4-21", "March11-21", "March18-21", "March25-21", "April1-21", "April8-21", "April15-21", "April22-21", "April29-21", "May13-21")
+dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June2", "June10", "June24", "July2", "July8", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9", "September17", "September24", "October1", "October8", "October15", "October22", "October29", "November5", "November12", "November19", "December3", "December10", "December17", "December31", "January7-21", "January14-21", "January21-21", "January28-21", "February4-21", "February11-21", "February25-21", "March4-21", "March11-21", "March18-21", "March25-21", "April1-21", "April8-21", "April15-21", "April22-21", "April29-21", "May13-21", "May28-21", "June3-21", "June10-21", "June16-21", "June24-21", "July1-21", "July8-21", "July22-21", "July29-21", "August5-21")
 
 
 # This is probably inefficient
@@ -60,7 +60,7 @@ get_filename <- function(id){
 if(IS_GOOGLE_UPSET_WITH_ME){
   category_map = read.csv(sprintf("/Users/alex/Downloads/category_map.csv"))
 }  else {
-  category_map = read.csv(sprintf("https://docs.google.com/uc?id=%s&export=download", "15Q8ouDdxMCCU_C8zo5CXNtULe1bqPup5"))
+  category_map = read.csv(sprintf("https://docs.google.com/uc?id=%s&export=download", "1mDLgTTL__T8A_WFEtxM52zf3AOVezPPk"))
 }
 
 # don't run this too much or google gets upset
@@ -72,7 +72,7 @@ if(IS_GOOGLE_UPSET_WITH_ME){
 
 scoreframes = lapply(filenames, read.csv)
 
-create_rounds_data_frame <- function(normalize=FALSE){
+create_rounds_data_frame <- function(normalizeme=FALSE){
   roundframes = data.frame()
   
   # Combine scoresheets and round categories list
@@ -93,7 +93,16 @@ create_rounds_data_frame <- function(normalize=FALSE){
     
     if(!all(rd_nums %in% creator_nums)){
       missing_index = which(!(rd_nums %in% creator_nums))
-      l = insert(playerlist, missing_index, "Unknown")
+      if(length(missing_index) == 1){
+        l = insert(playerlist, missing_index, "Unknown")
+      }
+      else{
+        newlist = insert(playerlist, missing_index[1], "Unknown")
+        for(j in 2:length(missing_index)){
+          newlist = insert(newlist, missing_index[j], "Unknown")
+        }
+        l = newlist
+      }
     }
     
     d=data.frame("Creator" = l)
@@ -107,7 +116,7 @@ create_rounds_data_frame <- function(normalize=FALSE){
     colnames(d) = c("Creator", players)
     
     r = cbind(my_cmap, d)
-    if(normalize){
+    if(normalizeme){
       r[10:18] = (r[10:18] / r$Possible.Points) * 10
     }
     
@@ -119,7 +128,7 @@ create_rounds_data_frame <- function(normalize=FALSE){
   return(roundframes)
 }
 
-roundframes = create_rounds_data_frame(normalize=TRUE)
+roundframes = create_rounds_data_frame(normalizeme=TRUE)
 
 
 
