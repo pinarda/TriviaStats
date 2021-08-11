@@ -57,7 +57,11 @@ get_filename <- function(id){
 }
 
 # read category_map.csv in google drive
-category_map = read.csv(sprintf("https://docs.google.com/uc?id=%s&export=download", "1EwjfhedsNozQkUFz3IgagdC7R_EQMYTe"))
+if(IS_GOOGLE_UPSET_WITH_ME){
+  category_map = read.csv(sprintf("/Users/alex/Downloads/category_map.csv"))
+}  else {
+  category_map = read.csv(sprintf("https://docs.google.com/uc?id=%s&export=download", "15Q8ouDdxMCCU_C8zo5CXNtULe1bqPup5"))
+}
 
 # don't run this too much or google gets upset
 if(IS_GOOGLE_UPSET_WITH_ME){
