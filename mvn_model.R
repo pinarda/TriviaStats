@@ -51,6 +51,7 @@ theme_c
 
 set.seed(1)
 mae_mvns = rep(NA, 50)
+bias_mvns = rep(NA, 50)
 for(j in 1:50) {
   sample_ind <- sample.int(n=nrow(normalized_rdf), size = floor(.8*nrow(normalized_rdf)), replace = F)
   
@@ -107,8 +108,14 @@ for(j in 1:50) {
 
     roboAlexMean <-  meanAlex + Sigma_YX %*% solve(Sigma_X) %*% (sampleScores - myMeanPlayerScores)
 
+    #if(roboAlexMean[1][1] > 10){
+    #  roboAlexMean[1][1] = 10
+    #}
+    
     errors[i] = roboAlexMean - test[i, "Alex"]
   }
   mae_mvns[j] = mean(abs(errors), na.rm=TRUE)
+  bias_mvns[j] = mean(errors, na.rm=TRUE)
 }
 mean(mae_mvns)
+mean(bias_mvns)

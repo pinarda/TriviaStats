@@ -16,7 +16,7 @@ library(grid) # for textGrob
 
 
 # should match csv file names
-dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June2", "June10", "June24", "July2", "July8", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9", "September17", "September24", "October1", "October8", "October15", "October22", "October29", "November5", "November12", "November19", "December3", "December10", "December17", "December31", "January7-21", "January14-21", "January21-21", "January28-21", "February4-21", "February11-21", "February25-21", "March4-21", "March11-21", "March18-21", "March25-21", "April1-21", "April8-21", "April15-21", "April22-21", "April29-21", "May13-21", "May28-21", "June3-21", "June10-21", "June16-21", "June24-21", "July1-21", "July8-21", "July22-21", "July29-21", "August5-21")
+dates=c("March18", "March25", "April1", "April8", "April15", "April22", "April29", "May6", "May13", "May20", "May27", "June2", "June10", "June24", "July2", "July8", "July15", "July22", "July29", "August5", "August12", "August19", "September3", "September9", "September17", "September24", "October1", "October8", "October15", "October22", "October29", "November5", "November12", "November19", "December3", "December10", "December17", "December31", "January7-21", "January14-21", "January21-21", "January28-21", "February4-21", "February11-21", "February25-21", "March4-21", "March11-21", "March18-21", "March25-21", "April1-21", "April8-21", "April15-21", "April22-21", "April29-21", "May13-21", "May19-21", "May28-21", "June3-21", "June10-21", "June16-21", "June24-21", "July1-21", "July8-21", "July22-21", "July29-21", "August5-21")
 
 
 # This is probably inefficient
